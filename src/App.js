@@ -1,23 +1,38 @@
-import logo from './logo.svg';
 import './App.css';
+import Header from './components/Header';
+import Note from './components/Note';
+import Footer from './components/Footer';
+import notes from './notes';
+import InputArea from "./components/InputArea";
+import { useState } from 'react';
+import uuid from 'react-uuid';
+
 
 function App() {
+
+  const [fromNotes, operateNotes] = useState(notes);
+
+  const newNotes = fromNotes.map(function (elem){
+    return <Note key={key()} title={elem.title} content={elem.content}/>
+  })
+
+  function key(){
+    return uuid();
+  }
+
+  function addNote(note){
+    //operateNotes([...fromNotes, {title: inputTitle, content: inputContent}]);
+    operateNotes((prevItems) => {
+      return [...prevItems, note];
+    });
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Header />
+      <InputArea addNote={addNote} />
+      {newNotes}      
+      <Footer />
     </div>
   );
 }
